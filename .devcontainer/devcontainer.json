@@ -1,0 +1,29 @@
+{
+  "name": "Prodev SLAM Jazzy",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "root",
+  "workspaceFolder": "/home/dev/ros2_ws",
+  "workspaceMount": "source=${localWorkspaceFolder}/..,target=/home/dev/ros2_ws,type=bind,consistency=cached",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-iot.vscode-ros",
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "ms-python.python"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "runArgs": [
+    "--net=host",
+    "--env=DISPLAY=${env:DISPLAY}",
+    "--env=QT_X11_NO_MITSHM=1",
+    "--volume=/tmp/.X11-unix:/tmp/.X11-unix:rw"
+  ],
+  "postCreateCommand": "source /opt/ros/jazzy/setup.bash && cd /home/dev/ros2_ws && colcon build --symlink-install"
+}
