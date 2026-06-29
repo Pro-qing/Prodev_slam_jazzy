@@ -1,0 +1,21 @@
+# Git
+.git/
+.gitignore
+
+# ROS2 build artifacts
+build/
+install/
+logs/
+log/
+
+# IDE
+.vscode/
+.idea/
+
+# Large documentation files
+docs/*.pdf
+docs/*.xmind
+
+# OS files
+.DS_Store
+Thumbs.db

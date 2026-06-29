@@ -10,7 +10,8 @@ set -e
 IMAGE_NAME="prodev_jazzy"
 CONTAINER_NAME="prodev_jazzy_container"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+# Project root is the directory containing this scripts/ folder
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 BUILD=false
 GUI=false
@@ -55,24 +56,36 @@ fi
 # Build run command
 RUN_ARGS=(
     -it
+    --rm
     --name ${CONTAINER_NAME}
     --net=host
+    --env="ROS_WS=/ros2_ws"
 )
 
 if [ "$GUI" = true ]; then
-    echo "Enabling GUI support (X11 forwarding)..."
+    echo "Enabling GUI support (X11 forwarding) and NVIDIA GPU (RTX 5070)..."
     xhost +local:docker 2>/dev/null || true
     RUN_ARGS+=(
         --env="DISPLAY=$DISPLAY"
         --env="QT_X11_NO_MITSHM=1"
+        --env="XAUTHORITY=${XAUTHORITY:-$HOME/.Xauthority}"
         --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw"
+        --gpus all
+        --env="NVIDIA_VISIBLE_DEVICES=all"
+        --env="NVIDIA_DRIVER_CAPABILITIES=all"
     )
+
+    # Mount DRI/GPU devices when available
+    if [ -d /dev/dri ]; then
+        RUN_ARGS+=(--volume="/dev/dri:/dev/dri")
+    fi
 fi
 
 if [ "$DEV" = true ]; then
     echo "Development mode: mounting local source code..."
     RUN_ARGS+=(
-        --volume="${PROJECT_ROOT}/src:/ros2_ws/src"
+        --volume="${PROJECT_ROOT}/Prodev_simulation:/ros2_ws/src/Prodev_simulation"
+        --volume="${PROJECT_ROOT}/Prodev_bringup:/ros2_ws/src/Prodev_bringup"
     )
 fi
 
