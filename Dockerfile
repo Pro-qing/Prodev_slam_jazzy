@@ -1,5 +1,7 @@
 FROM ros@sha256:6513503d0b10e919fbe8134981d4f9d19b5c1f9b045b87a9fe3b0b9e03e7c2a9
 
+# Mirror selection: official or ustc (University of Science and Technology of China)
+ARG MIRROR=official
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Set locale and timezone
@@ -7,6 +9,15 @@ ENV LANG=en_US.UTF-8
 ENV LC_ALL=C.UTF-8
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Switch to USTC mirror for apt and ROS2 packages when requested
+RUN if [ "$MIRROR" = "ustc" ]; then \
+        sed -i 's|http://archive.ubuntu.com/ubuntu/|http://mirrors.ustc.edu.cn/ubuntu/|g' /etc/apt/sources.list.d/ubuntu.sources && \
+        sed -i 's|http://security.ubuntu.com/ubuntu/|http://mirrors.ustc.edu.cn/ubuntu/|g' /etc/apt/sources.list.d/ubuntu.sources && \
+        sed -i 's|http://ports.ubuntu.com/ubuntu-ports|http://mirrors.ustc.edu.cn/ubuntu-ports|g' /etc/apt/sources.list.d/ubuntu.sources && \
+        sed -i 's|http://packages.ros.org/ros2/ubuntu|http://mirrors.ustc.edu.cn/ros2/ubuntu|g' /etc/apt/sources.list.d/ros2.sources /usr/share/ros-apt-source/ros2.sources && \
+        sed -i 's/^Types: deb deb-src/Types: deb/' /etc/apt/sources.list.d/ros2.sources /usr/share/ros-apt-source/ros2.sources; \
+    fi
 
 # Install essential build tools and remaining ROS2/Gazebo dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
