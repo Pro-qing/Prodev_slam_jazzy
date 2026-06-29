@@ -17,13 +17,12 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     # 获取功能包路径
-    simulation_dir = get_package_share_directory('car_simulation')
-    bringup_dir = get_package_share_directory('robot_bringup')
+    simulation_dir = get_package_share_directory('Prodev_simulation')
 
     # 声明参数
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
     world_file = os.path.join(simulation_dir, 'worlds', 'empty.world')
-    urdf_file = os.path.join(bringup_dir, 'urdf', 'robot.urdf')
+    urdf_file = os.path.join(simulation_dir, 'urdf', 'robot.urdf')
 
     # 读取 URDF 文件内容
     with open(urdf_file, 'r') as infp:
@@ -79,6 +78,7 @@ def generate_launch_description():
     )
 
     # 启动 sensor_tf launch 文件 (传感器标定 TF)
+    bringup_dir = get_package_share_directory('Prodev_bringup')
     sensor_tf_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(bringup_dir, 'launch', 'sensor_tf.launch.py')

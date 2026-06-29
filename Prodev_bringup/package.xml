@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>Prodev_simulation</name>
+  <name>Prodev_bringup</name>
   <version>0.0.1</version>
-  <description>ROS2 Jazzy SLAM simulation package using Gazebo Sim (gz sim)</description>
+  <description>Top-level bringup package for Prodev SLAM Jazzy system</description>
   <maintainer email="maintainer@example.com">Prodev Maintainer</maintainer>
   <license>MIT</license>
 
@@ -11,14 +11,7 @@
 
   <depend>launch</depend>
   <depend>launch_ros</depend>
-  <depend>robot_state_publisher</depend>
-  <depend>joint_state_publisher</depend>
-  <depend>joint_state_publisher_gui</depend>
-  <depend>xacro</depend>
-  <depend>tf2_ros</depend>
-  <depend>rviz2</depend>
-  <depend>ros_gz_sim</depend>
-  <depend>ros_gz_bridge</depend>
+  <depend>Prodev_simulation</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
