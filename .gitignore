@@ -1,4 +1,16 @@
+# ROS2 build artifacts
 install/
 build/
 logs/
 log/
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local-only files
+anything.md

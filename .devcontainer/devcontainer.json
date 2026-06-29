@@ -3,9 +3,9 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "remoteUser": "root",
-  "workspaceFolder": "/home/dev/ros2_ws",
-  "workspaceMount": "source=${localWorkspaceFolder}/..,target=/home/dev/ros2_ws,type=bind,consistency=cached",
+  "remoteUser": "dev",
+  "workspaceFolder": "/ros2_ws/src/Prodev_slam_jazzy",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/ros2_ws/src/Prodev_slam_jazzy,type=bind,consistency=cached",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -23,7 +23,8 @@
     "--net=host",
     "--env=DISPLAY=${env:DISPLAY}",
     "--env=QT_X11_NO_MITSHM=1",
-    "--volume=/tmp/.X11-unix:/tmp/.X11-unix:rw"
+    "--volume=/tmp/.X11-unix:/tmp/.X11-unix:rw",
+    "--gpus=all"
   ],
-  "postCreateCommand": "source /opt/ros/jazzy/setup.bash && cd /home/dev/ros2_ws && colcon build --symlink-install"
+  "postCreateCommand": "source /opt/ros/jazzy/setup.bash && cd /ros2_ws && colcon build --symlink-install"
 }

@@ -1,16 +1,21 @@
 # Prodev SLAM Jazzy
 
-基于 ROS2 Jazzy 的 SLAM 仿真项目，使用 Ubuntu 24.04 和 Gazebo 进行机器人仿真。
+基于 ROS2 Jazzy 的 SLAM 仿真项目，使用 Ubuntu 24.04 和 Gazebo Sim (gz sim) 进行机器人仿真。
 
 ## 项目结构
 
 ```
 Prodev_slam_jazzy/
+├── Prodev_bringup/          # 顶层系统启动功能包
+│   ├── config/              # 系统配置文件
+│   ├── launch/              # 顶层 launch 文件
+│   └── rviz/                # RViz 配置文件
 ├── Prodev_simulation/       # 仿真功能包
 │   ├── config/              # 配置文件 (TF 参数等)
 │   ├── launch/              # Launch 启动文件
 │   ├── urdf/                # 机器人 URDF 模型
 │   └── worlds/              # Gazebo 世界文件
+├── .devcontainer/           # VS Code Dev Container 配置
 ├── docs/                    # 项目文档
 ├── scripts/                 # 脚本工具
 ├── tools/                   # 工具
@@ -21,14 +26,19 @@ Prodev_slam_jazzy/
 
 - **操作系统**: Ubuntu 24.04 (Noble)
 - **ROS2 版本**: Jazzy Jalisco
-- **仿真器**: Gazebo
+- **仿真器**: Gazebo Sim (gz sim)
 - **构建工具**: colcon
 
 ## Docker 部署
 
-### 构建镜像
+项目提供两种 Docker 使用方式：
 
-在项目根目录执行：
+1. **本地生产镜像**：仓库外层的 `Dockerfile`（以 `~/Prodev_jazzy` 为构建上下文），用于构建可独立运行的镜像。
+2. **Dev Container**：`.devcontainer/Dockerfile`，用于 VS Code 开发容器，挂载本地源码进行开发。
+
+### 构建本地镜像
+
+在仓库外层目录（包含 `src/Prodev_slam_jazzy`）执行：
 
 ```bash
 docker build -t prodev_jazzy .
@@ -39,7 +49,7 @@ docker build -t prodev_jazzy .
 **基本运行：**
 
 ```bash
-docker run -it --name prodev_jazzy_container prodev_jazzy
+docker run -it --rm --name prodev_jazzy_container prodev_jazzy
 ```
 
 **支持 GUI 显示（RViz2 / Gazebo）：**
@@ -48,21 +58,24 @@ docker run -it --name prodev_jazzy_container prodev_jazzy
 # 允许 Docker 访问 X11 显示
 xhost +local:docker
 
-docker run -it --name prodev_jazzy_container \
+docker run -it --rm --name prodev_jazzy_container \
     --env="DISPLAY=$DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+    --gpus all \
     prodev_jazzy
 ```
 
 **挂载本地代码（开发模式）：**
 
 ```bash
-docker run -it --name prodev_jazzy_container \
-    --volume="$(pwd)/src:/ros2_ws/src" \
+docker run -it --rm --name prodev_jazzy_container \
+    --volume="$(pwd)/src/Prodev_slam_jazzy/Prodev_simulation:/ros2_ws/src/Prodev_simulation" \
+    --volume="$(pwd)/src/Prodev_slam_jazzy/Prodev_bringup:/ros2_ws/src/Prodev_bringup" \
     --env="DISPLAY=$DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+    --gpus all \
     prodev_jazzy
 ```
 
@@ -71,7 +84,17 @@ docker run -it --name prodev_jazzy_container \
 使用 `scripts/docker_run.sh` 快速启动：
 
 ```bash
-bash scripts/docker_run.sh
+# 基本运行
+bash src/Prodev_slam_jazzy/scripts/docker_run.sh
+
+# 启用 GUI（RViz2 / Gazebo），自动挂载 NVIDIA GPU
+bash src/Prodev_slam_jazzy/scripts/docker_run.sh --gui
+
+# 开发模式（挂载本地源码）
+bash src/Prodev_slam_jazzy/scripts/docker_run.sh --gui --dev
+
+# 强制重新构建镜像
+bash src/Prodev_slam_jazzy/scripts/docker_run.sh --build --gui
 ```
 
 ### 常用 Docker 命令
@@ -101,9 +124,16 @@ docker build --no-cache -t prodev_jazzy .
 # Source 工作空间
 source /ros2_ws/install/setup.bash
 
-# 启动 Gazebo 仿真
+# 启动 Gazebo 仿真（仿真包）
 ros2 launch Prodev_simulation gazebo_sim.launch.py
+
+# 或启动整体系统 bringup（顶层入口）
+ros2 launch Prodev_bringup prodev_bringup.launch.py
 ```
+
+## Dev Container
+
+使用 VS Code 打开本项目，选择 "Reopen in Container"，即可在预配置好的容器中进行开发。容器会自动挂载 `Prodev_slam_jazzy` 到 `/ros2_ws/src/Prodev_slam_jazzy` 并执行 `colcon build`。
 
 ## License
 
