@@ -19,7 +19,7 @@ RUN if [ "$MIRROR" = "ustc" ]; then \
         sed -i 's/^Types: deb deb-src/Types: deb/' /etc/apt/sources.list.d/ros2.sources /usr/share/ros-apt-source/ros2.sources; \
     fi
 
-# Install essential build tools and remaining ROS2/Gazebo dependencies
+# Install essential build tools and remaining ROS2/Gazebo/SLAM dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     build-essential \
@@ -40,6 +40,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-jazzy-tf2-ros \
     ros-jazzy-tf2-tools \
     ros-jazzy-rviz2 \
+    ros-jazzy-cartographer-ros \
+    ros-jazzy-cartographer-rviz \
     ros-jazzy-ament-* \
     && rm -rf /var/lib/apt/lists/*
 
@@ -52,10 +54,6 @@ WORKDIR ${ROS_WS}
 COPY Prodev_simulation/ ${ROS_WS}/src/Prodev_simulation/
 COPY Prodev_bringup/ ${ROS_WS}/src/Prodev_bringup/
 COPY Prodev_slam/ ${ROS_WS}/src/Prodev_slam/
-
-# Copy cartographer repos file and import external sources
-COPY cartographer.repos ${ROS_WS}/cartographer.repos
-RUN vcs import ${ROS_WS}/src < ${ROS_WS}/cartographer.repos
 
 # Build the workspace
 RUN /bin/bash -c "source /opt/ros/jazzy/setup.bash && colcon build --symlink-install"
