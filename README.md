@@ -95,7 +95,23 @@ bash src/Prodev_slam_jazzy/scripts/docker_run.sh --gui --dev
 
 # 强制重新构建镜像
 bash src/Prodev_slam_jazzy/scripts/docker_run.sh --build --gui
+
+# 使用中科大镜像源构建（适合国内网络）
+bash src/Prodev_slam_jazzy/scripts/docker_run.sh --build --mirror ustc
+
+# WSL2 下启用 GUI
+bash src/Prodev_slam_jazzy/scripts/docker_run.sh --gui --wsl
 ```
+
+**参数说明：**
+
+- `--build`：强制重新构建 Docker 镜像
+- `--gui`：启用 X11 转发，支持 RViz2 / Gazebo 显示
+- `--dev`：挂载本地 `Prodev_simulation` 和 `Prodev_bringup` 源码
+- `--mirror <official|ustc>`：选择 apt 镜像源，默认 `official`
+- `--wsl`：针对 Windows WSL2 调整 X11 和 GPU 参数
+
+> **WSL2 使用 GUI 注意**：Windows 宿主机需要运行 X Server（如 VcXsrv、Xming），并开启 "Disable access control"。
 
 ### 常用 Docker 命令
 
@@ -137,4 +153,6 @@ ros2 launch Prodev_bringup prodev_bringup.launch.py
 
 ## License
 
-详见 [LICENSE](./LICENSE)
+本项目采用 [GNU General Public License v3.0 (GPL-3.0)](./LICENSE) 开源协议。
+
+This project is licensed under the [GNU General Public License v3.0 (GPL-3.0)](./LICENSE).
