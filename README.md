@@ -33,15 +33,19 @@ Prodev_slam_jazzy/
 
 项目提供两种 Docker 使用方式：
 
-1. **本地生产镜像**：仓库外层的 `Dockerfile`（以 `~/Prodev_jazzy` 为构建上下文），用于构建可独立运行的镜像。
+1. **本地生产镜像**：仓库根目录的 `Dockerfile`，用于构建可独立运行的镜像。
 2. **Dev Container**：`.devcontainer/Dockerfile`，用于 VS Code 开发容器，挂载本地源码进行开发。
 
 ### 构建本地镜像
 
-在仓库外层目录（包含 `src/Prodev_slam_jazzy`）执行：
+在仓库根目录执行：
 
 ```bash
+# 国外网络（默认官方源）
 docker build -t prodev_jazzy .
+
+# 国内网络（中科大镜像源）
+docker build -t prodev_jazzy --build-arg MIRROR=ustc .
 ```
 
 ### 运行容器
