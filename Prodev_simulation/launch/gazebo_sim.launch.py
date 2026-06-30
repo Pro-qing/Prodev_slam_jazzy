@@ -10,8 +10,9 @@ from launch.actions import (
 )
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
@@ -21,7 +22,13 @@ def generate_launch_description():
 
     # 声明参数
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
-    world_file = os.path.join(simulation_dir, 'worlds', 'empty.world')
+    world_name = LaunchConfiguration('world', default='slam_maze')
+    world_file = PathJoinSubstitution([
+        FindPackageShare('Prodev_simulation'),
+        'worlds',
+        world_name,
+    ])
+    world_file_with_ext = [world_file, '.world']
     urdf_file = os.path.join(simulation_dir, 'urdf', 'robot.urdf')
 
     # 读取 URDF 文件内容
@@ -31,7 +38,11 @@ def generate_launch_description():
     # 启动 Gazebo Sim (gz sim)，加载世界文件
     # -r 表示自动开始运行, -v 4 表示 verbose level 4
     gz_sim_cmd = ExecuteProcess(
-        cmd=['gz', 'sim', '-r', '-v', '4', world_file],
+        cmd=[
+            'gz', 'sim',
+            world_file_with_ext,
+            '-r', '-v', '4',
+        ],
         output='screen',
     )
 
@@ -71,8 +82,8 @@ def generate_launch_description():
             '-topic', 'robot_description',
             '-name', 'robot',
             '-x', '0.0',
-            '-y', '0.0',
-            '-z', '0.09',
+            '-y', '0.5',
+            '-z', '0.5',
         ],
         output='screen',
     )
@@ -113,6 +124,11 @@ def generate_launch_description():
             'use_sim_time',
             default_value='true',
             description='Use simulation (Gazebo) clock if true'
+        ),
+        DeclareLaunchArgument(
+            'world',
+            default_value='slam_maze',
+            description='Gazebo world file name (without .world extension)'
         ),
 
         # 启动 Gazebo Sim
