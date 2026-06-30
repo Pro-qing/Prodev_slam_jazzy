@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - Add `sensor_tf.launch.py` for static sensor calibration TF publishers.
 - Add GitHub issue and pull request templates.
 - Add `CONTRIBUTING.md` contribution guidelines.
+- Add `LICENSE` under GNU General Public License v3.0 (GPL-3.0).
 
 ### Changed
 - Restructure project layout.

@@ -15,6 +15,7 @@
 - 添加 `sensor_tf.launch.py` 用于传感器静态标定 TF 发布。
 - 添加 GitHub Issue 和 Pull Request 模板。
 - 添加 `CONTRIBUTING.md` 贡献指南。
+- 添加 `LICENSE`，采用 GNU General Public License v3.0 (GPL-3.0) 开源协议。
 
 ### 变更
 - 调整项目目录结构。
