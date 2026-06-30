@@ -4,12 +4,8 @@ from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
     ExecuteProcess,
-    IncludeLaunchDescription,
-    RegisterEventHandler,
     TimerAction,
 )
-from launch.event_handlers import OnProcessExit
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -89,30 +85,37 @@ def generate_launch_description():
     )
 
     # 启动 sensor_tf launch 文件 (传感器标定 TF)
-    bringup_dir = get_package_share_directory('Prodev_bringup')
-    sensor_tf_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(bringup_dir, 'launch', 'sensor_tf.launch.py')
-        ),
-        launch_arguments={
-            'use_sim_time': use_sim_time,
-        }.items()
-    )
+    # Prodev_bringup 的 sensor_tf 与 URDF 中的固定关节 TF 重复，
+    # 为保持 simulation 包独立，不再依赖 bringup。
+    # bringup_dir = get_package_share_directory('Prodev_bringup')
+    # sensor_tf_launch = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(bringup_dir, 'launch', 'sensor_tf.launch.py')
+    #     ),
+    #     launch_arguments={
+    #         'use_sim_time': use_sim_time,
+    #     }.items()
+    # )
 
     # ROS-Gazebo 桥接 (将 Gazebo 原生话题桥接到 ROS)
     # Gz Sim 传感器话题必须使用完整路径
-    # 相机: /camera/image 和 /camera/camera_info
+    # 差速驱动里程计: Gazebo 默认发布到 /model/robot/odometry
+    # 相机: Gazebo 发布到 /camera (image) 和 /camera_info (camera_info)
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
             '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
-            '/camera/image@sensor_msgs/msg/Image[gz.msgs.Image',
-            '/camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            '/camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
             '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
-            '/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
+            '/model/robot/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry',
             '/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist',
+            '--ros-args',
+            '--remap', '/model/robot/odometry:=/odom',
+            '--remap', '/camera:=/camera/image',
+            '--remap', '/camera_info:=/camera/camera_info',
         ],
         output='screen',
         parameters=[{'use_sim_time': use_sim_time}],
@@ -152,6 +155,6 @@ def generate_launch_description():
             actions=[bridge],
         ),
 
-        # 启动传感器 TF
-        sensor_tf_launch,
+        # # 启动传感器 TF (已由 URDF + robot_state_publisher 提供)
+        # sensor_tf_launch,
     ])
