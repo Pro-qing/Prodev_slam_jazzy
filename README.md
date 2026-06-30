@@ -153,4 +153,6 @@ ros2 launch Prodev_bringup prodev_bringup.launch.py
 
 ## License
 
-详见 [LICENSE](./LICENSE)
+本项目采用 [GNU General Public License v3.0 (GPL-3.0)](./LICENSE) 开源协议。
+
+This project is licensed under the [GNU General Public License v3.0 (GPL-3.0)](./LICENSE).
