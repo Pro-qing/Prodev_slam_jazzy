@@ -40,6 +40,11 @@ WORKDIR ${ROS_WS}
 # Copy source packages
 COPY Prodev_simulation/ ${ROS_WS}/src/Prodev_simulation/
 COPY Prodev_bringup/ ${ROS_WS}/src/Prodev_bringup/
+COPY Prodev_slam/ ${ROS_WS}/src/Prodev_slam/
+
+# Copy cartographer repos file and import external sources
+COPY cartographer.repos ${ROS_WS}/cartographer.repos
+RUN vcs import ${ROS_WS}/src < ${ROS_WS}/cartographer.repos
 
 # Build the workspace
 RUN /bin/bash -c "source /opt/ros/jazzy/setup.bash && colcon build --symlink-install"
