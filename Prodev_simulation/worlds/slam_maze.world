@@ -433,10 +433,10 @@
 
     <model name="wall_new_inner_08">
       <static>true</static>
-      <pose>13.0 3.5 0.5 0 0 0</pose>
+      <pose>12.75 3.5 0.5 0 0 0</pose>
       <link name="link">
-        <collision name="collision"><geometry><box><size>3.0 0.2 1.0</size></box></geometry></collision>
-        <visual name="visual"><geometry><box><size>3.0 0.2 1.0</size></box></geometry>
+        <collision name="collision"><geometry><box><size>2.5 0.2 1.0</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>2.5 0.2 1.0</size></box></geometry>
           <material><ambient>0.4 0.4 0.45 1</ambient><diffuse>0.4 0.4 0.45 1</diffuse></material>
         </visual>
       </link>
@@ -444,7 +444,7 @@
 
     <model name="wall_new_inner_09">
       <static>true</static>
-      <pose>14.5 2.0 0.5 0 0 0</pose>
+      <pose>13.9 2.0 0.5 0 0 0</pose>
       <link name="link">
         <collision name="collision"><geometry><box><size>0.2 3.0 1.0</size></box></geometry></collision>
         <visual name="visual"><geometry><box><size>0.2 3.0 1.0</size></box></geometry>
