@@ -387,6 +387,72 @@
       </link>
     </model>
 
+    <model name="wall_new_inner_04">
+      <static>true</static>
+      <pose>6.5 1.2 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>2.0 0.2 1.0</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>2.0 0.2 1.0</size></box></geometry>
+          <material><ambient>0.4 0.4 0.45 1</ambient><diffuse>0.4 0.4 0.45 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_new_inner_05">
+      <static>true</static>
+      <pose>7.5 1.8 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.2 1.2 1.0</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.2 1.2 1.0</size></box></geometry>
+          <material><ambient>0.4 0.4 0.45 1</ambient><diffuse>0.4 0.4 0.45 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_new_inner_06">
+      <static>true</static>
+      <pose>9.5 -1.2 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>2.0 0.2 1.0</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>2.0 0.2 1.0</size></box></geometry>
+          <material><ambient>0.4 0.4 0.45 1</ambient><diffuse>0.4 0.4 0.45 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_new_inner_07">
+      <static>true</static>
+      <pose>10.5 -2.45 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.2 2.5 1.0</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.2 2.5 1.0</size></box></geometry>
+          <material><ambient>0.4 0.4 0.45 1</ambient><diffuse>0.4 0.4 0.45 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_new_inner_08">
+      <static>true</static>
+      <pose>13.0 3.5 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>3.0 0.2 1.0</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>3.0 0.2 1.0</size></box></geometry>
+          <material><ambient>0.4 0.4 0.45 1</ambient><diffuse>0.4 0.4 0.45 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_new_inner_09">
+      <static>true</static>
+      <pose>14.5 2.0 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.2 3.0 1.0</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.2 3.0 1.0</size></box></geometry>
+          <material><ambient>0.4 0.4 0.45 1</ambient><diffuse>0.4 0.4 0.45 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
     <!-- Gz Sim 系统插件 -->
     <plugin filename="gz-sim-scene-broadcaster-system"
             name="gz::sim::systems::SceneBroadcaster"/>
