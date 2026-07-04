@@ -41,6 +41,18 @@ def generate_launch_description():
         ],
     )
 
+    rviz_config_dir = os.path.join(slam_dir, 'rviz')
+    rviz_config_file = os.path.join(rviz_config_dir, 'cartographer.rviz')
+
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        arguments=['-d', rviz_config_file],
+        parameters=[{'use_sim_time': use_sim_time}],
+        output='screen',
+    )
+
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
@@ -54,4 +66,5 @@ def generate_launch_description():
         ),
         cartographer_node,
         cartographer_occupancy_grid_node,
+        rviz_node,
     ])

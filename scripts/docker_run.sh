@@ -1,11 +1,12 @@
 #!/bin/bash
 # Docker run script for Prodev SLAM Jazzy
 # Usage: bash scripts/docker_run.sh [options]
-#   --build    Force rebuild Docker image
-#   --gui      Enable GUI support (X11 forwarding for RViz2/Gazebo)
-#   --dev      Mount local source code for development
-#   --mirror   Select apt mirror: official (default) or ustc
-#   --wsl      Adjust X11/GPU settings for Windows WSL2
+#   --build      Force rebuild Docker image
+#   --no-cache   Rebuild without Docker cache (use when source code changed)
+#   --gui        Enable GUI support (X11 forwarding for RViz2/Gazebo)
+#   --dev        Mount local source code for development
+#   --mirror     Select apt mirror: official (default) or ustc
+#   --wsl        Adjust X11/GPU settings for Windows WSL2
 
 set -e
 
@@ -16,6 +17,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 BUILD=false
+NO_CACHE=false
 GUI=false
 DEV=false
 WSL=false
@@ -26,6 +28,7 @@ while [[ $# -gt 0 ]]; do
     arg="$1"
     case $arg in
         --build)  BUILD=true ; shift ;;
+        --no-cache) NO_CACHE=true ; BUILD=true ; shift ;;
         --gui)    GUI=true ; shift ;;
         --dev)    DEV=true ; shift ;;
         --wsl)    WSL=true ; shift ;;
@@ -43,6 +46,7 @@ while [[ $# -gt 0 ]]; do
             echo ""
             echo "Options:"
             echo "  --build          Force rebuild Docker image"
+            echo "  --no-cache       Rebuild without Docker cache (implies --build)"
             echo "  --gui            Enable GUI support (X11 forwarding for RViz2/Gazebo)"
             echo "  --dev            Mount local source code for development"
             echo "  --wsl            Adjust X11/GPU settings for Windows WSL2"
@@ -65,8 +69,14 @@ fi
 
 # Build image if requested or if image does not exist
 if [ "$BUILD" = true ] || [ -z "$(docker images -q ${IMAGE_NAME} 2>/dev/null)" ]; then
-    echo "Building Docker image: ${IMAGE_NAME} (mirror: ${MIRROR})..."
-    docker build -t ${IMAGE_NAME} --build-arg MIRROR=${MIRROR} -f ${PROJECT_ROOT}/Dockerfile ${PROJECT_ROOT}
+    CACHE_FLAG=""
+    CACHE_LABEL=""
+    if [ "$NO_CACHE" = true ]; then
+        CACHE_FLAG="--no-cache"
+        CACHE_LABEL=", no-cache"
+    fi
+    echo "Building Docker image: ${IMAGE_NAME} (mirror: ${MIRROR}${CACHE_LABEL})..."
+    docker build ${CACHE_FLAG} -t ${IMAGE_NAME} --build-arg MIRROR=${MIRROR} -f ${PROJECT_ROOT}/Dockerfile ${PROJECT_ROOT}
 fi
 
 # Stop and remove existing container with same name

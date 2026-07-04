@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>Prodev_bringup</name>
-  <version>0.0.1</version>
+  <version>0.0.3</version>
   <description>Top-level bringup package for Prodev SLAM Jazzy system</description>
   <maintainer email="maintainer@example.com">Prodev Maintainer</maintainer>
   <license>MIT</license>

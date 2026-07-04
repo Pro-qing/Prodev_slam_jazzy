@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>Prodev_simulation</name>
-  <version>0.0.1</version>
+  <version>0.0.3</version>
   <description>ROS2 Jazzy SLAM simulation package using Gazebo Sim (gz sim)</description>
   <maintainer email="maintainer@example.com">Prodev Maintainer</maintainer>
   <license>MIT</license>

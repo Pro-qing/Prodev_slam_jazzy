@@ -2,25 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.3] - 2026-07-04
+## [0.0.3] - 2026-07-05
 
 ### Added
-- Add `Prodev_nav2` Navigation2 package with configuration, launch files, and maps directory.
-- Integrate Nav2 source code (`navigation2` Jazzy branch) into the project for learning and customization.
-- Add `Prodev_slam` SLAM package with Cartographer algorithm integration.
-- Add `cartographer.launch.py` and `slam_sim.launch.py` launch files.
+- Add `Prodev_slam` SLAM package with Cartographer 2D mapping algorithm integration.
+- Add `cartographer.launch.py` launch file with automatic Cartographer node and rviz2 visualization.
+- Add `slam_sim.launch.py` integrated simulation + SLAM launch file.
 - Add `cartographer_2d.lua` Cartographer 2D mapping parameter configuration.
-- Add full Nav2 compilation dependencies to Dockerfile (`geographic_msgs`, `bond`, `cv_bridge`, `rviz`, `behaviortree_cpp`, etc.).
-- Add `Prodev_slam` and `Prodev_nav2/navigation2` volume mounts in `docker_run.sh` dev mode.
-- Add `navigation.launch.py` Nav2 navigation launch file.
-- Add `nav2_params.yaml` Nav2 parameter configuration (AMCL, NavFn planner, RPP controller, etc.).
+- Add `rviz/cartographer.rviz` SLAM visualization configuration (Map, LaserScan, RobotModel, TF).
+- Add `Prodev_slam/maps/map.pbstream` saved Cartographer map file.
+- Add rear caster wheel to robot model for improved stability.
+- Add complete SLAM mapping workflow documentation (keyboard control, map saving) to README.
+- Add robot model description and sensor configuration to README.
+- Add NVIDIA Container Toolkit prerequisite documentation to README.
+- Add `--no-cache` independent option to `docker_run.sh` for rebuilding without Docker cache.
+- Use binary `ros-jazzy-cartographer-ros` and `ros-jazzy-cartographer-rviz` packages instead of building from source.
+- Update `Prodev_slam/CMakeLists.txt` install rules to include `maps` directory.
 
 ### Changed
-- Update README project structure with `Prodev_slam` and `Prodev_nav2` directories.
-- Update Dockerfile to compile Nav2 from local source instead of downloading at build time.
+- Update README map saving section to use Cartographer services instead of nav2_map_server.
+- Configure DiffDrive plugin `odom_frame_id` and `child_frame_id` to remove Gazebo `robot/` prefix issue.
+- Restore ros_gz_bridge TF bridge (`/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V`).
+- Restore Cartographer config `provide_odom_frame = false` and `published_frame = "odom"`.
+- Update `cartographer.launch.py` to auto-start rviz2 visualization.
+- Update Dockerfile with Cartographer dependencies.
+- Unify all package versions to `0.0.3`.
 
 ### Fixed
-- Fix robot forward direction reversal by changing wheel rotation axis from `0 0 1` to `0 0 -1`.
+- Fix DiffDrive plugin missing TF bridge: add `<tf_topic>/tf</tf_topic>` to publish `odom → base_link` TF to ROS.
+- Fix IMU frame offset: change `imu_joint` origin to `xyz="0 0 0"` to colocate IMU frame with `base_link`.
+- Fix rviz Map display QoS Durability Policy from Volatile to Transient Local, resolving map not displaying.
+- Fix rviz config missing Interact tool and RobotModel display.
+- Fix `rviz/cartographer.rviz` Panel class names to use correct ROS2 Jazzy classes.
+- Fix robot drive wheel axis direction to correct forward movement.
 
 ## [0.0.2] - 2026-06-30
 

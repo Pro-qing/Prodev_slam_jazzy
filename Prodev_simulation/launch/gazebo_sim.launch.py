@@ -111,6 +111,7 @@ def generate_launch_description():
             '/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
             '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
             '/model/robot/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry',
+            '/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
             '/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist',
             '--ros-args',
             '--remap', '/model/robot/odometry:=/odom',

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>Prodev_slam</name>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
   <description>SLAM package for Prodev SLAM Jazzy using Google Cartographer</description>
   <maintainer email="maintainer@example.com">Prodev Maintainer</maintainer>
   <license>GPL-3.0</license>

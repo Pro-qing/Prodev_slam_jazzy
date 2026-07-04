@@ -2,25 +2,39 @@
 
 本项目的所有重要变更都将记录在此文件中。
 
-## [0.0.3] - 2026-07-04
+## [0.0.3] - 2026-07-05
 
 ### 新增
-- 添加 `Prodev_nav2` Nav2 导航功能包，包含参数配置、启动文件和地图目录。
-- 集成 Nav2 源码（`navigation2` Jazzy 分支）到项目中，用于学习和定制开发。
-- 添加 `Prodev_slam` SLAM 建图功能包，集成 Cartographer 算法。
-- 添加 `cartographer.launch.py` 和 `slam_sim.launch.py` 启动文件。
+- 添加 `Prodev_slam` SLAM 功能包，集成 Cartographer 2D 建图算法。
+- 添加 `cartographer.launch.py` 启动文件，自动加载 Cartographer 节点和 rviz2 可视化。
+- 添加 `slam_sim.launch.py` 仿真 SLAM 一体化启动文件。
 - 添加 `cartographer_2d.lua` Cartographer 2D 建图参数配置。
-- Dockerfile 添加 Nav2 完整编译依赖（`geographic_msgs`、`bond`、`cv_bridge`、`rviz`、`behaviortree_cpp` 等）。
-- `docker_run.sh` dev 模式新增 `Prodev_slam` 和 `Prodev_nav2/navigation2` 挂载。
-- 添加 `navigation.launch.py` Nav2 导航启动文件。
-- 添加 `nav2_params.yaml` Nav2 参数配置（AMCL 定位、NavFn 规划、RPP 控制器等）。
+- 添加 `rviz/cartographer.rviz` SLAM 可视化配置文件（Map、LaserScan、RobotModel、TF）。
+- 添加 `Prodev_slam/maps/map.pbstream` 已保存的 Cartographer 地图文件。
+- 添加后万向轮（rear caster）到机器人模型，提升运动稳定性。
+- 添加 SLAM 建图完整流程说明（键盘控制、地图保存）到 README。
+- 添加机器人模型描述和传感器配置说明到 README。
+- 添加 NVIDIA Container Toolkit 环境要求说明到 README。
+- `docker_run.sh` 添加 `--no-cache` 独立参数，源码有变更时强制无缓存构建。
+- 使用二进制 `ros-jazzy-cartographer-ros` 和 `ros-jazzy-cartographer-rviz` 包，替代源码编译。
+- 更新 `Prodev_slam/CMakeLists.txt` 安装规则，包含 `maps` 目录。
 
 ### 变更
-- 更新 README 项目结构，添加 `Prodev_slam` 和 `Prodev_nav2` 目录说明。
-- 更新 Dockerfile 使用本地 Nav2 源码编译，不依赖联网下载。
+- 更新 README 保存地图部分，使用 Cartographer 服务替代 nav2_map_server。
+- 配置 DiffDrive 插件 `odom_frame_id` 和 `child_frame_id`，消除 Gazebo `robot/` 前缀问题。
+- 恢复 ros_gz_bridge TF 桥接（`/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V`）。
+- 恢复 Cartographer 配置 `provide_odom_frame = false` 和 `published_frame = "odom"`。
+- 更新 `cartographer.launch.py` 自动启动 rviz2 可视化。
+- 更新 Dockerfile，添加 Cartographer 相关依赖。
+- 统一所有功能包版本号为 `0.0.3`。
 
 ### 修复
-- 修复机器人前进方向反转问题，将轮子旋转轴从 `0 0 1` 改为 `0 0 -1`。
+- 修复 DiffDrive 插件缺少 TF 桥接：添加 `<tf_topic>/tf</tf_topic>`，使 `odom → base_link` TF 发布到 ROS。
+- 修复 IMU 帧偏移问题：`imu_joint` origin 改为 `xyz="0 0 0"`，使 IMU 帧与 `base_link` 位置重合。
+- 修复 rviz Map 显示项 QoS Durability Policy 从 Volatile 改为 Transient Local，解决地图不显示问题。
+- 修复 rviz 配置缺少 Interact 工具和 RobotModel 显示项。
+- 修复 `rviz/cartographer.rviz` 中 Panel 类名错误，使用正确的 ROS2 Jazzy 类名。
+- 修复机器人驱动轮轴方向，纠正前进方向。
 
 ## [0.0.2] - 2026-06-30
 

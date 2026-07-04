@@ -144,6 +144,38 @@
     </inertial>
   </link>
 
+  <!-- ==================== 后万向轮 (支撑轮) ==================== -->
+  <!-- 球体万向轮: 半径 0.02m -->
+  <joint name="rear_caster_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="rear_caster_link"/>
+    <origin xyz="-0.12 0 -0.03" rpy="0 0 0"/>
+  </joint>
+
+  <link name="rear_caster_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <inertia
+        ixx="0.000016" ixy="0.0"   ixz="0.0"
+        iyy="0.000016" iyz="0.0"
+        izz="0.000016"/>
+    </inertial>
+  </link>
+
   <!-- ==================== 雷达 (Lidar) ==================== -->
   <!-- 安装在底盘顶部中心 -->
   <joint name="laser_joint" type="fixed">
@@ -222,7 +254,7 @@
   <joint name="imu_joint" type="fixed">
     <parent link="base_link"/>
     <child link="imu_link"/>
-    <origin xyz="0 0 0.02" rpy="0 0 0"/>
+    <origin xyz="0 0 0.0" rpy="0 0 0"/>
   </joint>
 
   <link name="imu_link">
@@ -260,6 +292,9 @@
       <wheel_radius>0.05</wheel_radius>
       <odom_publish_frequency>100</odom_publish_frequency>
       <topic>cmd_vel</topic>
+      <tf_topic>/tf</tf_topic>
+      <odom_frame_id>odom</odom_frame_id>
+      <child_frame_id>base_link</child_frame_id>
     </plugin>
   </gazebo>
 
