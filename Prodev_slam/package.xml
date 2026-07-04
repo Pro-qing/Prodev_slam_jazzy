@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>Prodev_slam</name>
+  <version>0.0.2</version>
+  <description>SLAM package for Prodev SLAM Jazzy using Google Cartographer</description>
+  <maintainer email="maintainer@example.com">Prodev Maintainer</maintainer>
+  <license>GPL-3.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>cartographer_ros</depend>
+  <depend>cartographer_rviz</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

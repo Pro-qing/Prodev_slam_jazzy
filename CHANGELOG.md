@@ -7,7 +7,10 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Add `Prodev_nav2` Navigation2 package with configuration, launch files, and maps directory.
 - Integrate Nav2 source code (`navigation2` Jazzy branch) into the project for learning and customization.
-- Add full Nav2 compilation dependencies to Dockerfile (`geographic_msgs`, `bond`, `cv_bridge`, `rviz`, etc.).
+- Add `Prodev_slam` SLAM package with Cartographer algorithm integration.
+- Add `cartographer.launch.py` and `slam_sim.launch.py` launch files.
+- Add `cartographer_2d.lua` Cartographer 2D mapping parameter configuration.
+- Add full Nav2 compilation dependencies to Dockerfile (`geographic_msgs`, `bond`, `cv_bridge`, `rviz`, `behaviortree_cpp`, etc.).
 - Add `Prodev_slam` and `Prodev_nav2/navigation2` volume mounts in `docker_run.sh` dev mode.
 - Add `navigation.launch.py` Nav2 navigation launch file.
 - Add `nav2_params.yaml` Nav2 parameter configuration (AMCL, NavFn planner, RPP controller, etc.).
@@ -15,6 +18,9 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Update README project structure with `Prodev_slam` and `Prodev_nav2` directories.
 - Update Dockerfile to compile Nav2 from local source instead of downloading at build time.
+
+### Fixed
+- Fix robot forward direction reversal by changing wheel rotation axis from `0 0 1` to `0 0 -1`.
 
 ## [0.0.2] - 2026-06-30
 

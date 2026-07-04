@@ -7,7 +7,10 @@
 ### 新增
 - 添加 `Prodev_nav2` Nav2 导航功能包，包含参数配置、启动文件和地图目录。
 - 集成 Nav2 源码（`navigation2` Jazzy 分支）到项目中，用于学习和定制开发。
-- Dockerfile 添加 Nav2 完整编译依赖（`geographic_msgs`、`bond`、`cv_bridge`、`rviz` 等）。
+- 添加 `Prodev_slam` SLAM 建图功能包，集成 Cartographer 算法。
+- 添加 `cartographer.launch.py` 和 `slam_sim.launch.py` 启动文件。
+- 添加 `cartographer_2d.lua` Cartographer 2D 建图参数配置。
+- Dockerfile 添加 Nav2 完整编译依赖（`geographic_msgs`、`bond`、`cv_bridge`、`rviz`、`behaviortree_cpp` 等）。
 - `docker_run.sh` dev 模式新增 `Prodev_slam` 和 `Prodev_nav2/navigation2` 挂载。
 - 添加 `navigation.launch.py` Nav2 导航启动文件。
 - 添加 `nav2_params.yaml` Nav2 参数配置（AMCL 定位、NavFn 规划、RPP 控制器等）。
@@ -15,6 +18,9 @@
 ### 变更
 - 更新 README 项目结构，添加 `Prodev_slam` 和 `Prodev_nav2` 目录说明。
 - 更新 Dockerfile 使用本地 Nav2 源码编译，不依赖联网下载。
+
+### 修复
+- 修复机器人前进方向反转问题，将轮子旋转轴从 `0 0 1` 改为 `0 0 -1`。
 
 ## [0.0.2] - 2026-06-30
 
