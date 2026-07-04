@@ -115,6 +115,8 @@ if [ "$DEV" = true ]; then
     RUN_ARGS+=(
         --volume="${PROJECT_ROOT}/Prodev_simulation:/ros2_ws/src/Prodev_simulation"
         --volume="${PROJECT_ROOT}/Prodev_bringup:/ros2_ws/src/Prodev_bringup"
+        --volume="${PROJECT_ROOT}/Prodev_slam:/ros2_ws/src/Prodev_slam"
+        --volume="${PROJECT_ROOT}/Prodev_nav2/navigation2:/ros2_ws/src/navigation2"
     )
 fi
 

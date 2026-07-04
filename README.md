@@ -15,6 +15,13 @@ Prodev_slam_jazzy/
 │   ├── launch/              # Launch 启动文件
 │   ├── urdf/                # 机器人 URDF 模型
 │   └── worlds/              # Gazebo 世界文件
+├── Prodev_slam/             # SLAM 建图功能包 (Cartographer)
+│   └── rviz/                # SLAM RViz 配置
+├── Prodev_nav2/             # Nav2 导航功能包
+│   ├── config/              # Nav2 参数配置
+│   ├── launch/              # 导航启动文件
+│   ├── maps/                # 地图存放目录
+│   └── navigation2/         # Nav2 源码 (学习参考)
 ├── .devcontainer/           # VS Code Dev Container 配置
 ├── docs/                    # 项目文档
 ├── scripts/                 # 脚本工具

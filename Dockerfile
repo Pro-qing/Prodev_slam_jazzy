@@ -41,6 +41,54 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-jazzy-tf2-tools \
     ros-jazzy-rviz2 \
     ros-jazzy-ament-* \
+    # Nav2 system dependencies
+    libceres-dev \
+    libabsl-dev \
+    libboost-dev \
+    libsdl2-dev \
+    libsdl2-image-dev \
+    libeigen3-dev \
+    libnanoflann-dev \
+    libomp-dev \
+    libompl-dev \
+    libxsimd-dev \
+    libxtensor-dev \
+    libgraphicsmagick++1-dev \
+    nlohmann-json3-dev \
+    ros-jazzy-angles \
+    ros-jazzy-backward-ros \
+    ros-jazzy-behaviortree-cpp \
+    ros-jazzy-bond \
+    ros-jazzy-bondcpp \
+    ros-jazzy-cv-bridge \
+    ros-jazzy-eigen3-cmake-module \
+    ros-jazzy-geographic-msgs \
+    ros-jazzy-image-transport \
+    ros-jazzy-laser-geometry \
+    ros-jazzy-lifecycle-msgs \
+    ros-jazzy-map-msgs \
+    ros-jazzy-message-filters \
+    ros-jazzy-nav-msgs \
+    ros-jazzy-nav-2d-msgs \
+    ros-jazzy-nav-2d-utils \
+    ros-jazzy-pluginlib \
+    ros-jazzy-rclcpp-action \
+    ros-jazzy-rclcpp-components \
+    ros-jazzy-rclcpp-lifecycle \
+    ros-jazzy-rcl-interfaces \
+    ros-jazzy-resource-retriever \
+    ros-jazzy-robot-localization \
+    ros-jazzy-rviz-common \
+    ros-jazzy-rviz-default-plugins \
+    ros-jazzy-rviz-ogre-vendor \
+    ros-jazzy-rviz-rendering \
+    ros-jazzy-tf2-eigen \
+    ros-jazzy-tf2-geometry-msgs \
+    ros-jazzy-tf2-sensor-msgs \
+    ros-jazzy-visualization-msgs \
+    ros-jazzy-yaml-cpp-vendor \
+    python3-yaml \
+    python3-osrf-pycommon \
     && rm -rf /var/lib/apt/lists/*
 
 # Create workspace
@@ -51,9 +99,11 @@ WORKDIR ${ROS_WS}
 # Copy source packages
 COPY Prodev_simulation/ ${ROS_WS}/src/Prodev_simulation/
 COPY Prodev_bringup/ ${ROS_WS}/src/Prodev_bringup/
+COPY Prodev_slam/ ${ROS_WS}/src/Prodev_slam/
+COPY Prodev_nav2/navigation2/ ${ROS_WS}/src/navigation2/
 
 # Build the workspace
-RUN /bin/bash -c "source /opt/ros/jazzy/setup.bash && colcon build --symlink-install"
+RUN /bin/bash -c "source /opt/ros/jazzy/setup.bash && colcon build --symlink-install --packages-skip nav2_system_tests --cmake-args -DBUILD_TESTING=OFF"
 
 # Create entrypoint script
 RUN echo '#!/bin/bash\n\
